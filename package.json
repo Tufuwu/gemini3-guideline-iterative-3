@@ -1,65 +1,44 @@
 {
-  "name": "react-cytoscapejs",
-  "version": "1.2.1",
-  "description": "React-based network visualization component, using Cytoscape",
+  "name": "i18n-zipcodes",
+  "version": "4.0.0",
+  "description": "International zipcodes validator based on Regex for Node.js and the browser.",
+  "keywords": [
+    "i18n",
+    "zipcode",
+    "validator",
+    "international",
+    "regex"
+  ],
+  "author": "Benjamin Blonde",
   "license": "MIT",
+  "main": "index.js",
+  "scripts": {
+    "build": "gulp",
+    "test": "nyc --reporter=text --reporter=lcov mocha",
+    "codecov": "npx codecov"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/plotly/react-cytoscapejs.git"
+    "url": "git+https://github.com/sarcadass/i18n-zipcodes.git"
   },
-  "bugs": {
-    "url": "https://github.com/plotly/react-cytoscapejs/issues"
+  "directories": {
+    "test": "test"
   },
-  "amdName": "ReactCytoscape",
-  "exports": "./dist/react-cytoscape.modern.js",
-  "main": "dist/react-cytoscape.cjs.js",
-  "module": "dist/react-cytoscape.module.js",
-  "source": "src/index.js",
-  "umd:main": "dist/react-cytoscape.umd.js",
-  "unpkg": "dist/react-cytoscape.umd.js",
-  "homepage": "https://github.com/plotly/react-cytoscapejs",
-  "scripts": {
-    "prepare": "run-s build build:docgen",
-    "build": "microbundle --globals=react=React,cytoscape=cytoscape,prop-types=PropTypes",
-    "build:docgen": "react-docgen src/component.js --pretty -o dist/react-cytoscape.docgen.json",
-    "clean": "rimraf dist/*",
-    "test:eslint": "eslint src/**",
-    "test:eslint:fix": "eslint --fix src/**",
-    "test:prettier": "prettier --list-different src/**",
-    "test:prettier:fix": "prettier --write src/**",
-    "test:mocha": "run-s build test:mocha:run",
-    "test:mocha:run": "mocha-chrome test/index.html",
-    "test": "run-s test:*",
-    "watch": "microbundle watch --globals=react=React,cytoscape=cytoscape,prop-types=PropTypes",
-    "start": "run-s watch"
-  },
-  "peerDependencies": {
-    "react": ">=15.0.0"
-  },
+  "files": [
+    "lib/*",
+    "dist/*"
+  ],
+  "dependencies": {},
   "devDependencies": {
-    "chai": "^4.1.2",
-    "eslint": "^4.6.1",
-    "eslint-config-standard": "^10.2.1",
-    "eslint-plugin-import": "^2.7.0",
-    "eslint-plugin-node": "^5.1.1",
-    "eslint-plugin-promise": "^3.5.0",
-    "eslint-plugin-standard": "^3.0.1",
-    "immutable": "^3.8.2",
-    "microbundle": "^0.15.0",
-    "mocha": "^5.2.0",
-    "mocha-chrome": "^1.1.0",
-    "npm-run-all": "^4.1.1",
-    "prettier": "^1.13.7",
-    "react": "^16.4.1",
-    "react-docgen": "^2.21.0",
-    "react-dom": "^16.4.1",
-    "rimraf": "^2.6.2"
-  },
-  "engines": {
-    "node": ">=8.11.3"
-  },
-  "dependencies": {
-    "cytoscape": "^3.2.19",
-    "prop-types": "^15.6.2"
+    "array-uniq": "^3.0.0",
+    "browserify": "^17.0.0",
+    "chai": "^4.3.4",
+    "gulp": "^4.0.2",
+    "gulp-header": "^2.0.9",
+    "gulp-rename": "^2.0.0",
+    "gulp-uglify": "^3.0.2",
+    "mocha": "^9.0.0",
+    "nyc": "^15.1.0",
+    "vinyl-source-stream": "^2.0.0"
   }
 }
