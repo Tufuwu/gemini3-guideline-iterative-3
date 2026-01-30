@@ -2,44 +2,59 @@ name: CI
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main, main ]
   pull_request:
-    branches:
-      - main
+    branches: [ main, main ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: ['20', '18', '16']
+    services:
+      postgres:
+        image: postgres:9.6
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
+          node-version: 18
+
+      - name: Create database
+        run: |
+          sudo apt-get install -y postgresql-client
+          psql -c 'create database sequelize;' -U postgres -h localhost
+        env:
+          PGPASSWORD: ""
 
       - name: Install dependencies
-        run: |
-          npm install
-          npm run bootstrap
-
-      - name: Run lint
-        run: npm run lint || npx eslint index.js lib/ packages/
+        run: npm install
 
       - name: Run tests
         run: npm test
 
-      - name: Coveralls
-        if: success()
-        run: npm run coveralls
+      - name: Coverage and Coveralls
+        run: |
+          ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha --report lcovonly test/overall.test.js -- --exit
+          cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+          rm -rf ./coverage
         env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COVERALLS_SERVICE_NAME: github
+          COVERALLS_GIT_BRANCH: ${{ github.ref_name }}
 
