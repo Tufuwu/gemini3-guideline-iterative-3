@@ -12,4 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import sparkdl
+
+# pylint: disable=wrong-import-position
+# pylint: disable=invalid-name
+
+from sparkdl.horovod.runner_base import HorovodRunner
+
+__all__ = ['HorovodRunner']
+
+
+__version__ = '2.2.0-db1'

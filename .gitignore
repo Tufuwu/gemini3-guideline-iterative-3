@@ -1,31 +1,23 @@
-*.bak
-*.egg-info/
+*.coverage
+*test_net_cached.pb
+*.class
 *.log
 *.pyc
-*.pyo
-*.tmp
+python/.setup.sh
+build/*.jar
 
-.DS_Store
-.coverage
-.coverage.*
-.done.*
+docs/build
 
-.eggs/
-.idea/
-.pytest_cache/
-.tox/
-.venv*/
-.settings/
-
+# python
+*.pyc
+docs/_build/
 build/
 dist/
-downloads/
+*.egg-info/
 
-__pypackages__/
-__pycache__/
-**/__pycache__/
 
-# -- OWN WORKSPACE: Directory(s), File(s)
-__*/
-__*.txt
+# intellij
+.idea/
 
+# MacOS
+.DS_Store

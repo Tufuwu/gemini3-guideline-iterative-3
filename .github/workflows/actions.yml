@@ -1,21 +1,15 @@
-name: Python Package
+name: CI
 
 on:
   push:
-    branches: [ main, main ]
   pull_request:
-    branches: [ main, main ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: false
       matrix:
-        python-version: ["3.8", "3.9", "3.11-dev"]
-        include:
-          - python-version: "3.11-dev"
-            continue-on-error: true
+        python-version: ["3.7"]
 
     steps:
       - name: Checkout code
@@ -26,23 +20,18 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Cache pip
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('setup.py') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -q -U pytest pytest-html pytest-metadata
-          python setup.py -q install
+          pip install sphinx==3.2.1 pyspark==3.0.1 tensorflow-cpu==1.15.0
+          pip install pytest
+
+      - name: Build documentation
+        run: |
+          pushd docs/
+          PYTHONPATH=.. make clean html
+          popd
 
       - name: Run tests
-        continue-on-error: ${{ matrix.continue-on-error || false }}
-        run: |
-          python --version
-          py.test tests
+        run: pytest
 
